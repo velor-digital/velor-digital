@@ -253,6 +253,261 @@ function FAQAccordion({ item }: { item: FAQItem }) {
   );
 }
 
+import { useState } from "react";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface Service {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface ProcessStep {
+  number: string;
+  title: string;
+  description: string;
+}
+
+interface Testimonial {
+  quote: string;
+  author: string;
+  role: string;
+}
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const services: Service[] = [
+  {
+    icon: "⚡",
+    title: "Workflow Automation",
+    description:
+      "Eliminate repetitive manual tasks. We design and deploy end-to-end automation pipelines that save your team hundreds of hours a month.",
+  },
+  {
+    icon: "🤖",
+    title: "AI Agent Development",
+    description:
+      "Custom AI agents that handle customer support, lead qualification, data processing, and more — running 24/7 without oversight.",
+  },
+  {
+    icon: "🔗",
+    title: "Systems Integration",
+    description:
+      "Connect your CRM, ERP, marketing tools, and databases into one seamless, automated ecosystem.",
+  },
+  {
+    icon: "📊",
+    title: "Analytics & Reporting",
+    description:
+      "Automated dashboards and reports delivered to your inbox. Real-time insights without manual data wrangling.",
+  },
+  {
+    icon: "💬",
+    title: "AI Chatbots & Assistants",
+    description:
+      "Intelligent conversational agents trained on your business data — deployed across your website, Slack, WhatsApp, and more.",
+  },
+  {
+    icon: "🚀",
+    title: "AI Strategy Consulting",
+    description:
+      "Not sure where to start? We audit your operations and identify the highest-ROI automation opportunities for your business.",
+  },
+];
+
+const steps: ProcessStep[] = [
+  {
+    number: "01",
+    title: "Discovery Call",
+    description:
+      "We learn about your business, your bottlenecks, and where automation can have the biggest impact.",
+  },
+  {
+    number: "02",
+    title: "Strategy & Design",
+    description:
+      "Our team maps out a custom automation architecture tailored to your workflows and tech stack.",
+  },
+  {
+    number: "03",
+    title: "Build & Integrate",
+    description:
+      "We build, test, and deploy your automation systems — fully integrated with your existing tools.",
+  },
+  {
+    number: "04",
+    title: "Launch & Optimise",
+    description:
+      "Go live with confidence. We monitor performance and continuously refine for maximum efficiency.",
+  },
+];
+
+const testimonials: Testimonial[] = [
+  {
+    quote:
+      "Velor Digital automated our entire onboarding process. What used to take 3 days now happens in under an hour. Exceptional work.",
+    author: "Sarah Okonkwo",
+    role: "COO, FinScale Africa",
+  },
+  {
+    quote:
+      "The AI agent they built handles 80% of our support tickets without human intervention. Our team can finally focus on real problems.",
+    author: "Marcus Chen",
+    role: "Head of Product, NexaFlow",
+  },
+  {
+    quote:
+      "We went from 40 hours of manual reporting per month to zero. The ROI was visible within the first two weeks.",
+    author: "Priya Sharma",
+    role: "Operations Lead, BrightPath SaaS",
+  },
+];
+
+const faqs: FAQItem[] = [
+  {
+    question: "How long does a typical project take?",
+    answer:
+      "Most projects are scoped and delivered within 2–6 weeks, depending on complexity. Simple automations can be live in under a week.",
+  },
+  {
+    question: "What tools and platforms do you work with?",
+    answer:
+      "We work across Make (Integromat), n8n, Zapier, Python, OpenAI, Anthropic, HubSpot, Salesforce, Notion, Airtable, Slack, and many more.",
+  },
+  {
+    question: "Do I need a technical team to maintain the automations?",
+    answer:
+      "No. We build systems that are easy to monitor and manage. We also provide documentation and ongoing support so your team stays in control.",
+  },
+  {
+    question: "How do you price your services?",
+    answer:
+      "We offer fixed-scope project pricing and monthly retainer packages. Book a discovery call and we'll recommend the best fit for your needs.",
+  },
+  {
+    question: "Can you automate something specific to our industry?",
+    answer:
+      "Yes. We've built automations for e-commerce, SaaS, finance, healthcare, logistics, and agencies. Book a call and we'll tell you what's possible.",
+  },
+];
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <nav style={styles.nav}>
+      <div style={styles.navInner}>
+        <a href="#hero" style={styles.logo}>
+          Velor<span style={styles.logoDot}>.</span>Digital
+        </a>
+
+        <div style={styles.navLinks}>
+          {["Services", "Process", "Results", "FAQ"].map((item) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              style={styles.navLink}
+            >
+              {item}
+            </a>
+          ))}
+          <a href="#contact" style={styles.navCta}>
+            Book a Call
+          </a>
+        </div>
+
+        <button
+          style={styles.hamburger}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? "✕" : "☰"}
+        </button>
+      </div>
+
+      {menuOpen && (
+        <div style={styles.mobileMenu}>
+          {["Services", "Process", "Results", "FAQ"].map((item) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              style={styles.mobileLink}
+              onClick={() => setMenuOpen(false)}
+            >
+              {item}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            style={styles.mobileCta}
+            onClick={() => setMenuOpen(false)}
+          >
+            Book a Call
+          </a>
+        </div>
+      )}
+    </nav>
+  );
+}
+
+function ServiceCard({ service }: { service: Service }) {
+  return (
+    <div style={styles.card}>
+      <div style={styles.cardIcon}>{service.icon}</div>
+      <h3 style={styles.cardTitle}>{service.title}</h3>
+      <p style={styles.cardDesc}>{service.description}</p>
+    </div>
+  );
+}
+
+function StepCard({ step }: { step: ProcessStep }) {
+  return (
+    <div style={styles.stepCard}>
+      <div style={styles.stepNumber}>{step.number}</div>
+      <h3 style={styles.stepTitle}>{step.title}</h3>
+      <p style={styles.stepDesc}>{step.description}</p>
+    </div>
+  );
+}
+
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  return (
+    <div style={styles.testimonialCard}>
+      <p style={styles.testimonialQuote}>"{testimonial.quote}"</p>
+      <div>
+        <div style={styles.testimonialAuthor}>{testimonial.author}</div>
+        <div style={styles.testimonialRole}>{testimonial.role}</div>
+      </div>
+    </div>
+  );
+}
+
+function FAQAccordion({ item }: { item: FAQItem }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div style={styles.faqItem}>
+      <button
+        style={styles.faqQuestion}
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+      >
+        <span>{item.question}</span>
+        <span style={styles.faqChevron}>{open ? "−" : "+"}</span>
+      </button>
+      {open && <p style={styles.faqAnswer}>{item.answer}</p>}
+    </div>
+  );
+}
+
 function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
